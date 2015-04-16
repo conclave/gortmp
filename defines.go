@@ -5,7 +5,6 @@ package rtmp
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -328,7 +327,7 @@ func InitLogger(l *log.Logger) {
 // If error panic
 func CheckError(err error, name string) {
 	if err != nil {
-		panic(errors.New(fmt.Sprintf("%s: %s", name, err.Error())))
+		panic(fmt.Errorf("%s: %s", name, err.Error()))
 	}
 }
 
@@ -341,13 +340,13 @@ func CheckError(err error, name string) {
 func ParseURL(url string) (rtmpURL RtmpURL, err error) {
 	s1 := strings.SplitN(url, "://", 2)
 	if len(s1) != 2 {
-		err = errors.New(fmt.Sprintf("Parse url %s error. url invalid.", url))
+		err = fmt.Errorf("Parse url %s error. url invalid.", url)
 		return
 	}
 	rtmpURL.protocol = strings.ToLower(s1[0])
 	s1 = strings.SplitN(s1[1], "/", 2)
 	if len(s1) != 2 {
-		err = errors.New(fmt.Sprintf("Parse url %s error. no app!", url))
+		err = fmt.Errorf("Parse url %s error. no app!", url)
 		return
 	}
 	s2 := strings.SplitN(s1[0], ":", 2)
@@ -355,11 +354,11 @@ func ParseURL(url string) (rtmpURL RtmpURL, err error) {
 		var port int
 		port, err = strconv.Atoi(s2[1])
 		if err != nil {
-			err = errors.New(fmt.Sprintf("Parse url %s error. port error: %s.", url, err.Error()))
+			err = fmt.Errorf("Parse url %s error. port error: %s.", url, err.Error())
 			return
 		}
 		if port > 65535 || port <= 0 {
-			err = errors.New(fmt.Sprintf("Parse url %s error. port error: %d.", url, port))
+			err = fmt.Errorf("Parse url %s error. port error: %d.", url, port)
 			return
 		}
 		rtmpURL.port = uint16(port)
@@ -367,7 +366,7 @@ func ParseURL(url string) (rtmpURL RtmpURL, err error) {
 		rtmpURL.port = 1935
 	}
 	if len(s2[0]) == 0 {
-		err = errors.New(fmt.Sprintf("Parse url %s error. host is empty.", url))
+		err = fmt.Errorf("Parse url %s error. host is empty.", url)
 		return
 	}
 	rtmpURL.host = s2[0]
@@ -448,18 +447,17 @@ func (rtmpUrl *RtmpURL) App() string {
 // Dump buffer
 func DumpBuffer(name string, data []byte, ind int) {
 	if logger.ModuleLevelCheck(logHandler, log.LOG_LEVEL_DEBUG) {
-		var logstring string
-		logstring = fmt.Sprintf("Buffer(%s):\n", name)
+		logstring := fmt.Sprintf("Buffer(%s):\n", name)
 		for i := 0; i < len(data); i++ {
 			logstring += fmt.Sprintf("%02x ", data[i])
 			switch (i + 1 + ind) % 16 {
 			case 0:
-				logstring += fmt.Sprintln("")
+				logstring += "\n"
 			case 8:
-				logstring += fmt.Sprint(" ")
+				logstring += " "
 			}
 		}
-		logstring += fmt.Sprintln("")
+		logstring += "\n"
 		logger.ModulePrintln(logHandler, log.LOG_LEVEL_DEBUG, logstring)
 	}
 }
