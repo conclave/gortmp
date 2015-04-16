@@ -1,4 +1,4 @@
-package gortmp
+package rtmp
 
 var (
 	my_s1 = []byte{

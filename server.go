@@ -1,5 +1,5 @@
 // Copyright 2013, zhangpeihao All rights reserved.
-package gortmp
+package rtmp
 
 import (
 	"bufio"

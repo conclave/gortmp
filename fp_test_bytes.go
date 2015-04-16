@@ -1,4 +1,4 @@
-package gortmp
+package rtmp
 
 var (
 	fp_s1 = []byte{
