@@ -1,4 +1,4 @@
-# GoRTMP [![Build Status](https://secure.travis-ci.org/zhangpeihao/gortmp.png)](http://travis-ci.org/zhangpeihao/gortmp)
+# GoRTMP [![Build Status](https://secure.travis-ci.org/conclave/gortmp.png)](http://travis-ci.org/conclave/gortmp)
 ======
 
 RTMP protocol implementation.
