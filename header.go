@@ -5,6 +5,7 @@ package rtmp
 import (
 	"encoding/binary"
 	"errors"
+
 	"github.com/zhangpeihao/log"
 )
 

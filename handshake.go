@@ -10,11 +10,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/zhangpeihao/log"
 	"io"
 	"math/rand"
 	"net"
 	"time"
+
+	"github.com/zhangpeihao/log"
 )
 
 const (

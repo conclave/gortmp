@@ -7,13 +7,14 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/zhangpeihao/goamf"
-	"github.com/zhangpeihao/log"
 	"io"
 	"net"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/zhangpeihao/goamf"
+	"github.com/zhangpeihao/log"
 )
 
 var DefaultObjectEncoding uint = amf.AMF0

@@ -7,10 +7,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/zhangpeihao/goamf"
-	"github.com/zhangpeihao/log"
 	"net"
 	"time"
+
+	"github.com/zhangpeihao/goamf"
+	"github.com/zhangpeihao/log"
 )
 
 const (

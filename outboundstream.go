@@ -4,6 +4,7 @@ package rtmp
 
 import (
 	"errors"
+
 	"github.com/zhangpeihao/goamf"
 	"github.com/zhangpeihao/log"
 )
