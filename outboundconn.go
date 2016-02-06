@@ -5,6 +5,7 @@ package rtmp
 import (
 	"bufio"
 	"bytes"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net"
@@ -47,7 +48,7 @@ type OutboundConn interface {
 	Send(message *Message) error
 	// Calls a command or method on Flash Media Server
 	// or on an application server running Flash Remoting.
-	Call(customParameters ...interface{}) (err error)
+	Call(name string, customParameters ...interface{}) (err error)
 	// Get network connect instance
 	Conn() Conn
 }
@@ -73,10 +74,15 @@ func Dial(url string, handler OutboundConnHandler, maxChannelNumber int) (Outbou
 	if err != nil {
 		return nil, err
 	}
-	if rtmpURL.protocol != "rtmp" {
-		return nil, errors.New(fmt.Sprintf("Unsupport protocol %s", rtmpURL.protocol))
+	var c net.Conn
+	switch rtmpURL.protocol {
+	case "rtmp":
+		c, err = net.Dial("tcp", fmt.Sprintf("%s:%d", rtmpURL.host, rtmpURL.port))
+	case "rtmps":
+		c, err = tls.Dial("tcp", fmt.Sprintf("%s:%d", rtmpURL.host, rtmpURL.port), &tls.Config{InsecureSkipVerify: true})
+	default:
+		err = errors.New(fmt.Sprintf("Unsupport protocol %s", rtmpURL.protocol))
 	}
-	c, err := net.Dial("tcp", fmt.Sprintf("%s:%d", rtmpURL.host, rtmpURL.port))
 	if err != nil {
 		return nil, err
 	}
@@ -377,8 +383,41 @@ func (obConn *outboundConn) Send(message *Message) error {
 
 // Calls a command or method on Flash Media Server
 // or on an application server running Flash Remoting.
-func (obConn *outboundConn) Call(customParameters ...interface{}) (err error) {
-	return errors.New("Unimplemented")
+func (obConn *outboundConn) Call(name string, customParameters ...interface{}) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = r.(error)
+			if obConn.err == nil {
+				obConn.err = err
+			}
+		}
+	}()
+	// Create command
+	transactionID := obConn.conn.NewTransactionID()
+	cmd := &Command{
+		IsFlex:        false,
+		Name:          name,
+		TransactionID: transactionID,
+		Objects:       make([]interface{}, 1+len(customParameters)),
+	}
+	cmd.Objects[0] = nil
+	for index, param := range customParameters {
+		cmd.Objects[index+1] = param
+	}
+	buf := new(bytes.Buffer)
+	err = cmd.Write(buf)
+	CheckError(err, "Call() Create command")
+	obConn.transactions[transactionID] = name
+
+	message := &Message{
+		ChunkStreamID: CS_ID_COMMAND,
+		Type:          COMMAND_AMF0,
+		Size:          uint32(buf.Len()),
+		Buf:           buf,
+	}
+	message.Dump(name)
+	return obConn.conn.Send(message)
+
 }
 
 // Get network connect instance
