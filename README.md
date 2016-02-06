@@ -1,5 +1,4 @@
 # GoRTMP [![Build Status](https://secure.travis-ci.org/conclave/gortmp.png)](http://travis-ci.org/conclave/gortmp)
-======
 
 RTMP protocol implementation.
 
@@ -14,7 +13,7 @@ RTMP protocol implementation.
 
 ## Examples:
 
-```golang
+```go
 // To connect FMS server
 obConn, err := rtmp.Dial(url, handler, 100)
 
