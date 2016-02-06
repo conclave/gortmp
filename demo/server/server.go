@@ -10,7 +10,6 @@ import (
 
 	"github.com/conclave/gortmp"
 	"github.com/zhangpeihao/goflv"
-	"github.com/zhangpeihao/log"
 )
 
 const (
@@ -92,10 +91,6 @@ func main() {
 	}
 	flag.Parse()
 
-	l := log.NewLogger(".", "server", nil, 60, 3600*24, true)
-	l.SetMainLevel(log.LOG_LEVEL_DEBUG)
-	rtmp.InitLogger(l)
-	defer l.Close()
 	handler := &ServerHandler{}
 	server, err := rtmp.NewServer("tcp", *address, handler)
 	if err != nil {

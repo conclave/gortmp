@@ -4,8 +4,7 @@ package rtmp
 
 import (
 	"bytes"
-
-	"github.com/zhangpeihao/log"
+	"log"
 )
 
 // Message
@@ -42,8 +41,7 @@ func NewMessage(csi uint32, t uint8, sid uint32, ts uint32, data []byte) *Messag
 }
 
 func (message *Message) Dump(name string) {
-	logger.ModulePrintf(logHandler, log.LOG_LEVEL_DEBUG,
-		"Message(%s){CID: %d, Type: %d, Timestamp: %d, Size: %d, StreamID: %d, IsInbound: %t, AbsoluteTimestamp: %d}\n", name,
+	log.Printf("Message(%s){CID: %d, Type: %d, Timestamp: %d, Size: %d, StreamID: %d, IsInbound: %t, AbsoluteTimestamp: %d}\n", name,
 		message.ChunkStreamID, message.Type, message.Timestamp, message.Size, message.StreamID, message.IsInbound, message.AbsoluteTimestamp)
 }
 

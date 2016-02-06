@@ -3,10 +3,9 @@ package rtmp
 
 import (
 	"bufio"
+	"log"
 	"net"
 	"time"
-
-	"github.com/zhangpeihao/log"
 )
 
 type ServerHandler interface {
@@ -34,16 +33,14 @@ func NewServer(network string, bindAddress string, handler ServerHandler) (*Serv
 	if err != nil {
 		return nil, err
 	}
-	logger.ModulePrintln(logHandler, log.LOG_LEVEL_DEBUG,
-		"Start listen...")
+	log.Println("Start listen...")
 	go server.mainLoop()
 	return server, nil
 }
 
 // Close listener.
 func (server *Server) Close() {
-	logger.ModulePrintln(logHandler, log.LOG_LEVEL_TRACE,
-		"Stop server")
+	log.Println("Stop server")
 	server.exit = true
 	server.listener.Close()
 }
@@ -55,8 +52,7 @@ func (server *Server) mainLoop() {
 			if server.exit {
 				break
 			}
-			logger.ModulePrintln(logHandler, log.LOG_LEVEL_WARNING,
-				"SocketServer listener error:", err)
+			log.Println("SocketServer listener error:", err)
 			server.rebind()
 		}
 		if c != nil {
@@ -78,26 +74,22 @@ func (server *Server) Handshake(c net.Conn) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			logger.ModulePrintln(logHandler, log.LOG_LEVEL_WARNING,
-				"Server::Handshake panic error:", err)
+			log.Println("Server::Handshake panic error:", err)
 		}
 	}()
-	logger.ModulePrintln(logHandler, log.LOG_LEVEL_DEBUG,
-		"Handshake begin")
+	log.Println("Handshake begin")
 	br := bufio.NewReader(c)
 	bw := bufio.NewWriter(c)
 	timeout := time.Duration(10) * time.Second
 	if err := SHandshake(c, br, bw, timeout); err != nil {
-		logger.ModulePrintln(logHandler, log.LOG_LEVEL_WARNING,
-			"SHandshake error:", err)
+		log.Println("SHandshake error:", err)
 		c.Close()
 		return
 	}
 	// New inbound connection
 	_, err := NewInboundConn(c, br, bw, server, 100)
 	if err != nil {
-		logger.ModulePrintln(logHandler, log.LOG_LEVEL_WARNING,
-			"NewInboundConn error:", err)
+		log.Println("NewInboundConn error:", err)
 		c.Close()
 		return
 	}

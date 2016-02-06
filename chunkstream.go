@@ -3,7 +3,7 @@
 package rtmp
 
 import (
-	"github.com/zhangpeihao/log"
+	"log"
 )
 
 // Chunk stream
@@ -102,8 +102,7 @@ func (chunkStream *OutboundChunkStream) NewOutboundHeader(message *Message) *Hea
 	} else {
 		header.ExtendedTimestamp = 0
 	}
-	logger.ModulePrintf(logHandler, log.LOG_LEVEL_DEBUG,
-		"OutboundChunkStream::NewOutboundHeader() header: %+v\n", header)
+	log.Printf("OutboundChunkStream::NewOutboundHeader() header: %+v\n", header)
 	chunkStream.lastHeader = header
 	chunkStream.lastOutAbsoluteTimestamp = timestamp
 	return header

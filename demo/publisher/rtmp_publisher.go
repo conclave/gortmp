@@ -8,7 +8,6 @@ import (
 
 	"github.com/conclave/gortmp"
 	"github.com/zhangpeihao/goflv"
-	"github.com/zhangpeihao/log"
 )
 
 const (
@@ -128,9 +127,6 @@ func main() {
 	}
 	flag.Parse()
 
-	l := log.NewLogger(".", "publisher", nil, 60, 3600*24, true)
-	rtmp.InitLogger(l)
-	defer l.Close()
 	createStreamChan = make(chan rtmp.OutboundStream)
 	testHandler := &TestOutboundConnHandler{}
 	fmt.Println("to dial")

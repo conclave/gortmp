@@ -13,7 +13,6 @@ import (
 
 	"github.com/conclave/gortmp"
 	"github.com/zhangpeihao/goflv"
-	"github.com/zhangpeihao/log"
 )
 
 const (
@@ -78,9 +77,6 @@ func main() {
 	}
 	flag.Parse()
 
-	l := log.NewLogger(".", "player", nil, 60, 3600*24, true)
-	rtmp.InitLogger(l)
-	defer l.Close()
 	// Create flv file
 	if len(*dumpFlv) > 0 {
 		var err error
