@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 var DefaultObjectEncoding uint = amf.AMF0

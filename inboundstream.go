@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 type InboundStreamHandler interface {

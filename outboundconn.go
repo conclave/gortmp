@@ -12,7 +12,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 const (

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 type OutboundStreamHandler interface {

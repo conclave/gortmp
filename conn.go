@@ -14,7 +14,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 // Conn

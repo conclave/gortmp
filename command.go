@@ -5,7 +5,7 @@ package rtmp
 import (
 	"log"
 
-	"github.com/zhangpeihao/goamf"
+	"github.com/conclave/gortmp/amf"
 )
 
 // Command
