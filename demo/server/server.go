@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/conclave/gortmp"
-	"github.com/zhangpeihao/goflv"
+	"github.com/conclave/gortmp/flv"
 )
 
 const (
